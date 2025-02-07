@@ -1,0 +1,29 @@
+---
+title: "Practical_One"
+---
+
+##Evaluate each row
+
+```{r, include=FALSE}
+airquality 
+i <- 1:153
+row_i <- airquality[1:length(i),]
+row_i
+
+```
+
+##Check if value is NA
+```{r, include=FALSE}
+is.na(row_i)
+
+
+```
+
+
+```{r}
+val <- airquality[[1]][153]
+if( is.na(val)){
+  
+  
+}
+```
