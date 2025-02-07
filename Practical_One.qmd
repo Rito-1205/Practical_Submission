@@ -8,7 +8,7 @@ title: "Practical_One"
 airquality 
 i <- 1:153
 row_i <- airquality[1:length(i),]
-row_i
+
 
 ```
 
