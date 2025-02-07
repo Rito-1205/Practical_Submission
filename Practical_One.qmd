@@ -2,28 +2,62 @@
 title: "Practical_One"
 ---
 
-##Evaluate each row
-
+##Libraries
 ```{r, include=FALSE}
-airquality 
-i <- 1:153
-row_i <- airquality[1:length(i),]
-row_
-
+library(readr)
+library(gamlss)
 ```
 
-##Check if value is NA
+##Question 1
 ```{r, include=FALSE}
-is.na(row_i)
 
+airquality
+row_i <- 0
+for (i in 1:153){
+  if(rowSums(airquality, na.rm = TRUE)){
+   row_i < row_i + i
+  }
+}
+print(airquality[i:row_i,])
+```
+##Question 2
+```{r}
+Col_Ozone <- airquality$Ozone
+Col_Temp <- airquality$Temp
 
+#Calculating the means
+Ozone_mean <- mean(Col_Ozone, na.rm = TRUE)
+Temp_mean <- mean(Col_Temp, na.rm =  TRUE)
+
+#Calculating the standard deviations
+Ozone_sd <- sd(Col_Ozone, na.rm = TRUE)
+Temp_sd <- sd(Col_Temp, na.rm =  TRUE)
+
+#Minimum values
+Ozone_min <- as.numeric(min(na.omit(Col_Ozone)))
+Temp_min <- as.numeric(min(na.omit(Col_Temp)))
+
+#Maximum values
+Ozone_max <- as.numeric(max(na.omit(Col_Ozone)))
+Temp_max <- as.numeric(max(na.omit(Col_Temp)))
 ```
 
+##Question 3
+```{r}
+data(cars)
+head(cars)
+X <- cbind(1, cars$speed)
+y <- cars$dist
+
+beta <- solve(t(X)%*%X)%*%t(X)%*%y
+```
+
+##Question 4
+```{r}
+m1 <- lm(dist ~ speed, data = cars)
+summary(m1)
+```
 
 ```{r}
-val <- airquality[[1]][153]
-if( is.na(val)){
-  
-  
-}
+
 ```
