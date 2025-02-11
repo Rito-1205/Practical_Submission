@@ -1,27 +1,36 @@
 ---
 title: "Practical_One"
+date:  2024-02-08
+format: html
+editor: visual
 ---
 
-##Libraries
+## Libraries
+
 ```{r, include=FALSE}
+#| label: setup
+#| include: false
 library(readr)
 library(gamlss)
 ```
 
-##Question 1
-```{r, include=FALSE}
+## Question 1
 
+```{r, include=FALSE}
+#| label: checking rows with NA and printing the rows
+#| echo: false
 airquality
-row_i <- 0
-for (i in 1:153){
-  if(rowSums(airquality, na.rm = TRUE)){
-   row_i < row_i + i
-  }
-}
-print(airquality[i:row_i,])
+data_na <- is.na(airquality)
+row_i <- rowSums(data_na)
+r_na <- airquality[row_i> 0,]
+print(r_na)
 ```
-##Question 2
+
+## Question 2
+
 ```{r}
+#| label: Calculating mean, standard deviation, minimun value and maximum value for each level of Ozone level and Temperature
+#| echo: false
 Col_Ozone <- airquality$Ozone
 Col_Temp <- airquality$Temp
 
@@ -42,22 +51,26 @@ Ozone_max <- as.numeric(max(na.omit(Col_Ozone)))
 Temp_max <- as.numeric(max(na.omit(Col_Temp)))
 ```
 
-##Question 3
+## Question 3
+
 ```{r}
+#| label: Fitting a linear regression model using the design matrix
+
 data(cars)
 head(cars)
 X <- cbind(1, cars$speed)
 y <- cars$dist
 
 beta <- solve(t(X)%*%X)%*%t(X)%*%y
+beta
 ```
 
-##Question 4
+## Question 4
+
 ```{r}
+#| label: Fitting a linear regression model using R
+#| echo: false
+
 m1 <- lm(dist ~ speed, data = cars)
 summary(m1)
-```
-
-```{r}
-
 ```

@@ -1,0 +1,88 @@
+---
+title: "Practical_Day_4"
+format: html
+editor: visual
+---
+
+## Practical Day 4
+
+Setting Up
+
+```{r}
+# Install tidyverse
+if (!requireNamespace("tidyverse", quietly = TRUE)) {
+  install.packages("tidyverse")
+}
+library(tidyverse)
+
+# Install and load nycflights13 for flight data
+if (!requireNamespace("nycflights13", quietly = TRUE)) {
+  install.packages("nycflights13")
+}
+if (!requireNamespace("remotes", quietly = TRUE)) {
+  install.packages("remotes")
+}
+remotes::install_github("SATVILab/UtilsDataRSV")
+library(nycflights13)
+library(tidyr)
+library(dplyr)
+```
+
+## Question 2
+
+Displaying the Flights dataset
+
+```{r}
+#| echo: false
+data_nycflights13 <- as_tibble(flights)
+dplyr::glimpse(data_nycflights13)
+UtilsDataRSV::view_cols(data_nycflights13)
+##'print(data_nycflights13, width = Inf)
+```
+
+Rewriting the code
+
+```{r}
+flight1 <- flights%>%filter(month == 1)
+
+dist_tbl <- flight1%>%group_by(carrier)%>%summarise(mean_distance = mean(distance, na.rm = TRUE),sd_distance = sd(distance, na.rm = TRUE))
+view(dist_tbl)
+```
+
+# Question 3
+
+The distance is the same for all routes with carrier identifier being AS. That is why the standard deviation is 0. The is only one route recorded with carrier identifier being OS and there iis
+
+```{r}
+AS_view <- flight1%>%filter(carrier == "AS")
+AS_view 
+OO_view <- flight1%>%filter(carrier == "OO")
+OO_view
+```
+
+# Question 4
+
+```{r}
+
+flights_r <- flights |> group_by(month, carrier)  |> summarise(avg_delay = mean(dep_delay, na.rm = TRUE))
+flights_r
+flights_r |>  pivot_wider(names_from = carrier, values_from = avg_delay)
+
+```
+
+## Question 5
+The proportion of the flights that were delayed and arrived on time is 10.52%.
+```{r}
+Number_flights <- flights |> filter(dep_delay >0, arr_delay<= 0) |> summarise(proportion = sum(dep_delay >0 & arr_delay <= 0, na.rm = TRUE))
+Proportion = (Number_flights/nrow(flights)) * 100
+Proportion
+
+```
+
+## Question 6
+6.1 
+```{r}
+routes_ <- flights |> group_by(origin, dest) |> distinct(carrier) |> summarise(count = n(), .groups = "drop")
+routes_g1 <- routes_ |> filter( count > 1)
+```
+6.2

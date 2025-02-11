@@ -1,0 +1,57 @@
+---
+title: "Practical_two"
+format: html
+editor: visual
+---
+
+## Generating simulated data
+
+```{r}
+set.seed(1)
+x <- 1:100
+e <- rnorm(n = 100, mean = 0, sd = 0.2)
+y <- numeric(length(x))
+y <- sin(x/10) + e
+
+```
+
+## Lowess Algorithm
+
+```{r}
+n <- as.numeric(length(x)) #No of observations
+
+f <- 0.3
+customLowess <- function(x, y, f ){
+  k <- ceiling(f*n) #No of neighbours to use
+  y_hat <- numeric(n)
+  w_ <- numeric(k)  #weightings of k neighbours
+  
+  for(i in 1:n){
+    distance <- abs(x - x[i])
+    index <- order(distance)[1:k] #order k closest neighbours
+    x_ <- x[index] # k closest x values
+    y_ <- y[index] #k closest y values
+  
+  #dist_c <- abs(x_ - x[i])
+    d_max <- max(distance[index])
+    w_ <- (1- (distance[index]/d_max)^3)^3
+    W<- diag(w_)
+    X_d <- cbind(1, x_)
+    beta_hat <- solve(t(X_d)%*%W%*%X_d)%*%t(X_d)%*%W%*%y_
+    beta_intercept <- beta_hat[1]
+    beta_1 <- beta_hat[2]
+  
+  y_hat[i] <- beta_intercept + beta_1*x[i]
+}
+  return(y_hat)
+}
+plot(x, y)
+lines(customLowess(x, y, 0.3), col = "red")
+```
+
+## Lowess R built in function
+
+```{r}
+plot(x, y)
+lines(lowess(x, y, 0.3))
+```
